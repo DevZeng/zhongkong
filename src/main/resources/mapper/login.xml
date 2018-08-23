@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.LoginMapper">
+  
+  <!-- 添加登录 -->
+  <insert id="insert_login" parameterType="login">
+  INSERT INTO fb_login(user_name,user_iphone,user_pwd,creatime,role) 
+  VALUES
+  (#{user_name},#{user_iphone},#{user_pwd},NOW(),#{role})
+  </insert>
+  
+  <!-- 删除账号 -->
+  <delete id="delete_login">
+  DELETE FROM fb_login WHERE id=#{id}
+  </delete>
+  
+  <!-- 用账号查看 -->
+  <select id="select_login" resultType="login">
+  SELECT * FROM fb_login WHERE user_iphone=#{user_iphone}
+  </select>
+  
+  <!-- 查看所有的账号 -->
+  <select id="select_all_login" resultType="login">
+  SELECT * FROM fb_login ORDER BY creatime DESC
+  </select>
+  
+  <!-- 查看权限 -->
+  <select id="get_role" resultType="String">
+  SELECT role
+  FROM fb_login
+  WHERE user_iphone = #{user_iphone}
+  </select>
+  </mapper> 

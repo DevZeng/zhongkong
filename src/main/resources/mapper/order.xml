@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.OrderMapper">
+  
+  <!-- 添加订单 -->
+  <insert id="insert_order" parameterType="order">
+  INSERT INTO fb_order(school_id,order_id,user_openid,user_name,goods_name,goods_price,goods_time,goods_times,order_status,creatime) 
+  VALUE
+  (#{school_id},#{order_id},#{user_openid},#{user_name},#{goods_name},#{goods_price},#{goods_time},#{goods_times},#{order_status},NOW())
+  </insert>
+  
+  <!-- 查看单个订单情况 -->
+  <select id="select_order" resultType="order">
+  SELECT * FROM fb_order WHERE order_id=#{order_id}
+  </select>
+  
+  <!--查看所有的订单  -->
+  <select id="select_all_order" resultType="order">
+  SELECT * FROM fb_order ORDER BY creatime DESC
+  </select>
+  
+  <!-- 用户查看订单情况 -->
+  <select id="select_user_order" resultType="order">
+  SELECT * FROM fb_order WHERE user_openid=#{user_openid}
+  </select>
+  
+  <!-- 支付成功 -->
+  <update id="update_order1">
+  UPDATE fb_order SET order_status=1 WHERE order_id=#{order_id}
+  </update>
+  
+  <!-- 退款中 -->
+  <update id="update_order2">
+  UPDATE fb_order SET order_status=2 WHERE order_id=#{order_id}
+  </update>
+  
+  <!--退款成功  -->
+  <update id="update_order3">
+  UPDATE fb_order SET order_status=3 WHERE order_id=#{order_id}
+  </update>
+  
+  <!-- 删除订单 -->
+  <delete id="detele_order">
+  DELETE FROM  fb_order WHERE order_id=#{order_id}
+  </delete>
+  
+  <!-- 查看订单总数 -->
+  <select id="select_num" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE school_id=#{school_id}
+  </select>
+  
+  <!-- 查看订单数 -->
+  <select id="select_ord_b" resultType="order">
+  SELECT * FROM fb_order WHERE school_id=#{school_id} ORDER BY creatime DESC 
+  </select>
+  
+  <!-- 提交总额 -->
+  <select id="select_ord_sum" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order
+  </select>
+  </mapper>

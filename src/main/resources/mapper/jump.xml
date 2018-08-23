@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.JumpMapper">
+  
+  <!-- 选择跳转地址 -->
+  <insert id="insert_jmp">
+  INSERT INTO fb_jump(school_id,school_name,jump,creatime) VALUES (#{school_id},#{school_name},#{jump},NOW())
+  </insert>
+  
+  <!-- 更新地址 -->
+  <update id="update_jmp">
+  UPDATE fb_jump SET jump =#{jump} WHERE school_id=#{school_id}
+  </update>
+  
+  <!-- 查看地址地址 -->
+  <select id="select_jump" resultType="com.tvac.entriy.Jump">
+  SELECT * FROM fb_jump WHERE school_id=#{school_id}
+  </select>
+  
+  </mapper>

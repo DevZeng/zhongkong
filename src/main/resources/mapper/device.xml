@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.DeviceMapper">
+  
+  <!-- 查询是否有设备号 -->
+  <select id="select_device" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM fb_device WHERE device_id=#{device_id}
+  </select>
+  
+  <!-- 添加型号 -->
+  <insert id="insert_version">
+  INSERT INTO fb_device_features(version_name,remarks,images)VALUES(#{version_name},#{remarks},#{images})
+  </insert>
+  
+  <!-- 删除型号 -->
+  <delete id="delete_version">
+  DELETE FROM fb_device_features WHERE version_id=#{version_id}
+  </delete>
+  
+  <!--查看所有的型号  -->
+  <select id="select_all_version" resultType="com.tvac.entriy.Version">
+  SELECT * FROM fb_device_features
+  </select>
+  
+  <!-- 查看型号 -->
+  <select id="select_version" resultType="com.tvac.entriy.Version">
+  SELECT * FROM fb_device_features WHERE version_id=#{version_id}
+  </select>
+  
+  <!-- 添加颜色 -->
+  <insert id="insert_color">
+  INSERT INTO fb_device_colour(colour,creatime) VALUES(#{colour},NOW())
+  </insert>
+  
+  <!-- 删除颜色 -->
+  <delete id="delete_color">
+  DELETE FROM fb_device_colour WHERE colour_id=#{colour_id}
+  </delete>
+  
+  <!-- 查看所有的颜色 -->
+  <select id="select_all_color" resultType="com.tvac.entriy.Color">
+  SELECT * FROM fb_device_colour
+  </select>
+  
+  <!-- 查看颜色 -->
+  <select id="select_color" resultType="com.tvac.entriy.Color">
+  SELECT * FROM fb_device_colour WHERE colour_id=#{colour_id}
+  </select>
+  
+  <!-- 添加设备 -->
+  <insert id="insert_d_add">
+  INSERT INTO fb_device_add(version_id,version_name,device_id,creatime)
+  VALUES
+  (#{version_id},#{version_name},#{device_id},NOW())
+  </insert>
+  
+  <!-- 查看所有的后台录入的设备 -->
+  <select id="select_alld_add" resultType="com.tvac.entriy.DeviceAdd">
+  SELECT * FROM fb_device_add ORDER BY creatime DESC
+  </select>
+  
+  <!-- 通过型号查看录入的设备 -->
+  <select id="select_vs_add" resultType="com.tvac.entriy.DeviceAdd">
+  SELECT * FROM fb_device_add WHERE version_id=#{version_id}
+  </select>
+  
+  <!-- 查看设备号 -->
+  <select id="select_deviceadd" resultType="com.tvac.entriy.DeviceAdd">
+  SELECT * FROM fb_device_add WHERE device_id=#{device_id}
+  </select>
+  
+  <!--  添加型型号对应的颜色图片-->
+  <insert id="insert_picture">
+  INSERT INTO fb_device_picture(version_id,version_name,colour_id,colour,picture,creatime)
+  VALUES
+  (#{version_id},#{version_name},#{colour_id},#{colour},#{picture},NOW())
+  </insert>
+  
+  <!-- 删除图片 -->
+  <delete id="detele_picture">
+  DELETE FROM  fb_device_picture WHERE picture_id=#{picture_id}
+  </delete>
+  
+  <!-- 通过型号查看图片 -->
+  <select id="select_all_picture" resultType="com.tvac.entriy.Picture">
+  SELECT * FROM fb_device_picture WHERE version_id=#{version_id}
+  </select>
+  
+  <!-- 查看设备 -->
+  <select id="select_dev" resultType="com.tvac.entriy.Device">
+  SELECT * FROM fb_device WHERE device_id=#{device_id} limit 1
+  </select>
+  
+  <!-- 更新设备绑定 -->
+  <update id="update_status1">
+  UPDATE fb_device SET device_status =1 WHERE device_id=#{device_id}
+  </update>
+  
+  <!-- 解绑 -->
+  <update id="update_status0">
+  UPDATE fb_device SET device_status =0 WHERE device_id=#{device_id}
+  </update>
+  
+  <!-- 查看定位信息 -->
+  <select id="select_securty" resultType="com.tvac.entriy.Security">
+  SELECT * FROM fb_device_status WHERE device_id=#{device_id} ORDER BY id DESC    LIMIT 1
+  </select>
+  
+  <!-- 根据设备id查看设备的信息 -->
+  <select id="select_adress" resultType="com.tvac.entriy.Security">
+  SELECT * FROM fb_device_status WHERE device_id=#{device_id}  ORDER BY cteation_time DESC 
+  </select>
+  
+  <!-- 删除定位信息 -->
+  <delete id="delete_dev_status">
+  DELETE FROM fb_device_status WHERE device_id=#{device_id}
+  </delete>
+  </mapper>

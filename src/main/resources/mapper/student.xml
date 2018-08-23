@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.StudentMapper">
+  
+  <!-- 添加孩子信息 -->
+  <insert id="insert_student" parameterType="student"> 
+  INSERT INTO fb_student(school_id,stu_id,user_openid,user_name,user_iphone,stu_name,stu_sex,stu_age,stu_number,stu_head,class_id,stu_images1,stu_images2,stu_images3,creat_time)
+  VALUES
+  (#{school_id},#{stu_id},#{user_openid},#{user_name},#{user_iphone},#{stu_name},#{stu_sex},#{stu_age},#{stu_number},#{stu_head},#{class_id},#{stu_images1},#{stu_images2},#{stu_images3},NOW())
+  </insert>
+  
+  <!-- 用学号查看学生 -->
+  <select id="select_student" resultType="student">
+  SELECT * FROM fb_student WHERE stu_number=#{stu_number}
+  </select>
+  
+  <!-- 用户查看孩子 -->
+  <select id="select_user" resultType="student">
+  SELECT * FROM fb_student WHERE user_openid=#{user_openid}
+  </select>
+  
+  <!-- 教师查看自己班级信息 -->
+  <select id="select_user_t" resultType="student">
+  SELECT * FROM fb_student WHERE class_id=#{class_id}
+  </select>
+  
+  <!-- 通过学生审核 -->
+  <update id="update_status1">
+  UPDATE fb_student SET stu_status=1 WHERE stu_number=#{stu_number}
+  </update>
+  
+  <!-- 不通过学生审核 -->
+  <update id="update_status2">
+  UPDATE fb_student SET stu_status=2 WHERE stu_number=#{stu_number}
+  </update>
+  
+  <!-- 通过学号和openid查询看孩子信息 -->
+  <select id="select_stu_n" resultType="student">
+  SELECT * FROM fb_student WHERE user_openid=#{user_openid} AND stu_number=#{stu_number}
+  </select>
+  
+  <!-- 修改孩子的头像 -->
+  <update id="update_images">
+  UPDATE fb_student SET stu_images1=#{stu_images1},stu_images2=#{stu_images2},stu_images3=#{stu_images3},stu_head=#{stu_head} WHERE stu_number=#{stu_number}
+  </update>
+  
+  <!-- 删除学生申请的信息 -->
+  <delete id="delete_student">
+  DELETE  FROM fb_student WHERE stu_number=#{stu_number}
+  </delete>
+  
+  <!-- 查看孩子的数量 -->
+  <select id="select_sum" resultType="java.lang.Integer">
+  select count(*) from fb_student where school_id=#{school_id}
+  </select>
+  <!-- 安卓更新图片 -->
+  <update id="update_anzhuo_stu">
+  UPDATE  fb_student  SET stu_images2=#{stu_images2} WHERE stu_number=#{stu_number}
+  </update>
+  
+  <!-- 同步到后台 -->
+  <select id="select_tong" resultType="student">
+  SELECT * FROM fb_student WHERE stu_status=1
+  </select>
+  
+  <select id="select_stu_b" resultType="student">
+  SELECT * FROM fb_student WHERE school_id=#{school_id} ORDER BY creat_time DESC 
+  </select>
+  </mapper>

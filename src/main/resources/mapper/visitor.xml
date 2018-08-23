@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.VisitorMapper">
+  
+  <!-- 添加访客申请 -->
+  <insert id="insert_vistor" parameterType="visitor">
+  INSERT INTO fb_visitor(school_id,user_openid,user_name,user_iphone,visitor_head1,visitor_head2,visitor_time,visitor_butt,visitor_reason,creatime) 
+  VALUES
+  (#{school_id},#{user_openid},#{user_name},#{user_iphone},#{visitor_head1},#{visitor_head2},#{visitor_time},#{visitor_butt},#{visitor_reason},NOW())
+  </insert>
+  
+  <!-- 申请成功 -->
+  <update id="vistior_status1">
+  UPDATE fb_visitor SET vistior_status=1 ,creatime=NOW()  WHERE visitor_id=#{visitor_id}
+  </update>
+  
+  <!--  申请不成功-->
+  <update id="vistior_status2">
+  UPDATE fb_visitor SET vistior_status=2 WHERE visitor_id=#{visitor_id}
+  </update>
+  
+  <!--  过期 -->
+  <update id="vistior_status3">
+  UPDATE fb_visitor SET vistior_status=3 WHERE visitor_id=#{visitor_id}
+  </update>
+  
+  <!-- 查看单个申请 -->
+  <select id="select_d_visitor" resultType="visitor">
+  SELECT * FROM fb_visitor WHERE visitor_id=#{visitor_id}
+  </select>
+  
+  <!--  查看所有的申请 -->
+  <select id="select_all_visitor" resultType="visitor">
+  SELECT * FROM fb_visitor ORDER BY creatime DESC 
+  </select>
+  
+  <!-- 用户查看申请记录 -->
+  <select id="select_u_visitor" resultType="visitor">
+  SELECT * FROM fb_visitor WHERE user_openid=#{user_openid} ORDER BY creatime DESC 
+  </select>
+  
+  <!-- 查看客户有申请的有效期 -->
+  <select id="select_u_cz" resultType="visitor">
+  SELECT * FROM fb_visitor WHERE user_openid=#{user_openid} AND (vistior_status=1 OR vistior_status=0)
+  </select>
+  
+  <!--  -->
+  <select id="select_user" resultType="visitor">
+  SELECT * FROM fb_visitor WHERE user_openid=#{user_openid}
+  </select>
+  
+  <!-- 查看访客人数 -->
+  <select id="select_sum" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM fb_visitor WHERE school_id=#{school_id}
+  </select>
+  
+  <!-- 根据学校id查看访客 -->
+  <select id="select_vis_b" resultType="visitor">
+  SELECT * FROM fb_visitor WHERE school_id=#{school_id} ORDER BY creatime DESC 
+  </select>
+  
+  </mapper>
+  

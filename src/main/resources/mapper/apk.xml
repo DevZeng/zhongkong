@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.ApkMapper">
+  
+  <!-- 添加一级分类 -->
+  <insert id="insert_main">
+  INSERT INTO fb_main(main_name,creatime) VALUES(#{main_name},NOW())
+  </insert>
+  
+  <!-- 查看一级分类  -->
+  <select id="select_main" resultType="com.tvac.entriy.MainClass">
+  SELECT * FROM fb_main
+  </select>
+  
+  <!-- 添加二级分类 -->
+  <insert id="insert_two">
+  INSERT INTO fb_two(id,two_name,creatime)VALUES(#{id},#{two_name},NOW())
+  </insert>
+  
+  <!-- 添加查看二级分类 -->
+  <select id="select_two" resultType="com.tvac.entriy.TwoClass">
+  SELECT * FROM fb_two WHERE id=#{id}
+  </select>
+  
+  <!-- 插入apk -->
+  <insert id="insert_apk">
+  INSERT INTO fb_apk(two_id,apk_address,domain_name,apk_edition,creatime)
+  VALUES
+  (#{two_id},#{apk_address},#{domain_name},#{apk_edition},NOW())
+  </insert>
+  
+  <!-- 修改apk -->
+  <update id="update_apk">
+  UPDATE fb_apk SET apk_address=#{apk_address},domain_name=#{domain_name},apk_edition=#{apk_edition} ,upatetime=NOW() WHERE id=#{id}
+  </update>
+  
+  <!-- 查看apk -->
+  <select id="select_apk" resultType="com.tvac.entriy.Apk">
+  SELECT * FROM fb_apk WHERE two_id=#{two_id}
+  </select>
+  
+  <!-- 查看所有的apk -->
+  <select id="select_all_apk" resultType="com.tvac.entriy.Apk">
+  SELECT * FROM fb_apk
+  </select>
+  
+  
+  </mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.Teacher_ApplyMapper">
+  
+  <!-- 添加教师认证 -->
+  <insert id="insert_teacher_apply" parameterType="com.tvac.entriy.Teacher_Apply">
+  INSERT INTO fb_teacher_apply(school_id,user_openid,user_image,user_alias,user_name,user_sex,user_iphone,user_mail,user_age,user_card,user_address,user_word,whether,user_head1,user_head2,
+  class_grade,class_name,work_number,subjects,creat_time)
+  VALUES
+  (#{school_id},#{user_openid},#{user_image},#{user_alias},#{user_name},#{user_sex},#{user_iphone},#{user_mail},#{user_age},#{user_card},#{user_address},#{user_word},#{whether},#{user_head1},#{user_head2},
+  #{class_grade},#{class_name},#{work_number},#{subjects},NOW())
+  </insert>
+  
+  <!-- 更改教师资料 -->
+  <update id="update_teacher_apply" parameterType="com.tvac.entriy.Teacher_Apply">
+  UPDATE fb_teacher_apply SET user_image=#{user_image},user_alias=#{user_alias},user_name=#{user_name},user_sex=#{user_sex},user_iphone=#{user_iphone},user_mail=#{user_mail},user_age=#{user_age},
+  user_card=#{user_card},user_address=#{user_address},user_word=#{user_word},whether=#{whether},class_grade=#{class_grade},class_name=#{class_name},user_head1=#{user_head1},user_head2=#{user_head2},
+  work_number=#{work_number},subjects=#{subjects}
+  WHERE user_openid=#{user_openid}
+  </update>
+  
+  <!-- 删除教师审核资料 -->
+  <delete id="delete_teacher_apply">
+  DELETE FROM fb_teacher_apply WHERE user_openid=#{user_openid}
+  </delete>
+  
+  <!-- 查看教师的资料 -->
+  <select id="select_teacher_apply" resultType="com.tvac.entriy.Teacher_Apply">
+  SELECT * FROM fb_teacher_apply WHERE user_openid=#{user_openid}
+  </select>
+  
+  <!-- 查看教师的列表 -->
+  <select id="select_t_all_apply" resultType="com.tvac.entriy.Teacher_Apply"> 
+  SELECT * FROM fb_teacher_apply ORDER BY creat_time DESC
+  </select>
+  
+  <!-- 通过教师认证 -->
+  <update id="update_teacher_status2">
+  UPDATE fb_teacher_apply SET STATUS=2 WHERE user_openid=#{user_openid}
+  </update>
+  
+    <!-- 不通过教师认证 -->
+  <update id="update_teacher_status0">
+  UPDATE fb_teacher_apply SET STATUS=0 WHERE user_openid=#{user_openid}
+  </update>
+  
+  <!-- 审核状态 -->
+  <update id="update_teacher_status1">
+  UPDATE fb_teacher_apply SET STATUS=1 WHERE user_openid=#{user_openid}
+  </update>
+  
+  <!-- 查看班主任 -->
+  <select id="select_ban_apply" resultType="tearcher_apply">
+  SELECT * FROM fb_teacher_apply WHERE user_openid=#{user_openid} AND whether=1 AND STATUS=2
+  </select>
+  
+  <!-- 安卓查看老师 -->
+  <select id="select_work_number" resultType="tearcher_apply">
+  SELECT * FROM fb_teacher_apply WHERE work_number=#{work_number}
+  </select>
+  
+  <!-- 判断教师用户是否存在 -->
+  <select id="select_user_t" resultType="tearcher_apply">
+  SELECT * FROM fb_teacher_apply WHERE user_openid=#{user_openid} OR work_number=#{work_number}
+  </select>
+  
+  <!-- 更新老师头像 -->
+  <update id="update_t_images">
+  UPDATE fb_teacher_apply SET user_head2=#{user_head2} WHERE work_number=#{work_number}
+  </update>
+  </mapper>

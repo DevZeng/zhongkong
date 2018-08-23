@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.UserMapper">
+  
+  <!-- 用户注册 -->
+  <insert id="insert_user" parameterType="user">
+  INSERT INTO fb_user(school_id ,user_id,user_openid,user_image,user_alias,user_name,user_sex,user_iphone,user_mail,user_age,user_card,user_address,user_word,creat_time)
+  VALUES
+  (#{school_id},#{user_id},#{user_openid},#{user_image},#{user_alias},#{user_name},#{user_sex},#{user_iphone},#{user_mail},#{user_age},#{user_card},#{user_address},#{user_word},NOW())
+  </insert>
+  
+  <!-- 查看用户 -->
+  <select id="select_user" resultType="user">
+  SELECT * FROM fb_user WHERE user_openid=#{user_openid}
+  </select>
+  
+  <!-- 查看所有的用户 -->
+  <select id="select_all_user" resultType="user">
+  SELECT * FROM fb_user ORDER BY creat_time DESC
+  </select>
+  
+  <!-- 改变了老师的状态 -->
+  <update id="update_teacher">
+  UPDATE fb_user SET teacher=1 WHERE user_openid=#{user_openid}
+  </update>
+  
+  <!-- 查看用户的数量 -->
+  <select id="select_sum" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM fb_user WHERE school_id=#{school_id}
+  </select>
+  
+  <!--查看教师人数 -->
+  <select id="select_t_sum" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM fb_user WHERE school_id=#{school_id} AND teacher=1
+  </select>
+  
+  <!-- 根据学校id查看用户-->
+  <select id="select_user_b" resultType="user">
+  SELECT * FROM fb_user WHERE school_id=#{school_id}  ORDER BY creat_time DESC 
+  </select>
+  
+  <!-- 根据学校id查看教师 -->
+  <select id="select_tea_b" resultType="user">
+  SELECT * FROM fb_user WHERE school_id=#{school_id} AND teacher=1 ORDER BY creat_time DESC 
+  </select>
+  
+  </mapper>

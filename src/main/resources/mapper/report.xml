@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.ReportMapper">
+  
+    <!-- 当月的月季 -->
+  <select id="select_month" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE DATE_FORMAT( creatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+  </select>
+  
+  <!-- 查出一个季度 -->
+  <select id="select_quarter" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE QUARTER(creatime)=QUARTER(NOW())
+  </select>
+  
+  <!-- 查看当年的季度 -->
+  <select id="select_year" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE YEAR(creatime)=YEAR(NOW())
+  </select>
+  
+  <!-- 查看上个季度的业绩-->
+  <select id="select_s_quarter" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE QUARTER(creatime)=QUARTER(DATE_SUB(NOW(),INTERVAL 1 QUARTER))
+  </select>
+
+  <!-- 产看当周的 -->
+  <select id="select_week" resultType="java.lang.Double"><!-- &lt;==小于 -->
+  SELECT SUM(goods_price) FROM fb_order WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= DATE(creatime)
+  </select>
+  
+  <!-- 根据时间段查看订单 -->
+  <select id="select_time_o" resultType="com.tvac.entriy.Order">
+  SELECT * FROM fb_order WHERE creatime BETWEEN #{start} AND #{end} ORDER BY creatime DESC 
+  </select>
+  
+  <!--  根据时间段查看订单总额-->
+  <select id="select_time_p" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE creatime BETWEEN #{start} AND #{end} ORDER BY creatime DESC 
+  </select>
+  
+  <!--学校当月的月季 -->
+  <select id="select_sch_month" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE school_id=#{school_id} AND DATE_FORMAT( creatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+  </select>
+  
+  <!-- 学校查出一个季度 -->
+  <select id="select_sch_quarter" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE school_id=#{school_id} AND QUARTER(creatime)=QUARTER(NOW())
+  </select>
+  
+  <!-- 查看当年的 -->
+  <select id="select_sch_year" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE school_id=#{school_id} AND YEAR(creatime)=YEAR(NOW())
+  </select>
+  
+  <!-- 查看学校上个季度 -->
+  <select id="select_sch_s_quarter" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE school_id=#{school_id} AND QUARTER(creatime)=QUARTER(DATE_SUB(NOW(),INTERVAL 1 QUARTER))
+  </select>
+  
+  <!-- 查看学校每周的 -->
+  <select id="select_sch_week" resultType="java.lang.Double">
+  SELECT SUM(goods_price) FROM fb_order WHERE school_id=#{school_id} AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= DATE(creatime)
+  </select>
+  </mapper>

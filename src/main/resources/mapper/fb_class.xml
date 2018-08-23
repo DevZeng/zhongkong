@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tvac.mapper.ClassMapper">
+  
+  <!--  添加分类 -->
+  <insert id="insert_class">
+  INSERT INTO fb_class(class_name,creatime) VALUES(#{class_name},NOW())
+  </insert>
+  
+  <!--  删除分类-->
+  <delete id="delete_class">
+  DELETE FROM fb_class WHERE class_id=#{class_id}
+  </delete>
+    
+  <!--  查看所有的分类 -->
+  <select id="select_list" resultType="com.tvac.entriy.Classif">
+  SELECT * FROM fb_class ORDER BY creatime DESC
+  </select>
+  </mapper>
