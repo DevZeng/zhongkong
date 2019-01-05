@@ -53,7 +53,7 @@ public class DeviceService {
 	
 	/*
 	 * 解绑
-	 */
+	 */ 
 	public Msg update_status0(Long device_id) {
 		int update_status0=deviceMapper.update_status0(device_id);
 		if(update_status0>0) {
@@ -62,6 +62,7 @@ public class DeviceService {
 			return ResultUtil.error(0, "解绑失败!");
 		}
 	}
+	
 	/*
 	 * 添加设备型号
 	 */
@@ -221,8 +222,6 @@ public class DeviceService {
 	public Results insert_picture(int version_id,String color,String picture) {
 		Results result=new Results();
 		Version select_version=deviceMapper.select_version(version_id);
-//		Color select_color=deviceMapper.select_color(colour_id);
-//		System.out.println(select_version+""+select_color);
 		if(select_version!=null) {
 			int insert_picture=deviceMapper.insert_picture(version_id, select_version.getVersion_name(), 0, color, picture);
 			if(insert_picture==1) {
